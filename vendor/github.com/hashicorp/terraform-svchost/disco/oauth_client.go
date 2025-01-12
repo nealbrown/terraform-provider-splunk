@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+
 package disco
 
 import (
@@ -46,6 +48,11 @@ type OAuthClient struct {
 	// by the server, even if a particular keyword is not supported by the
 	// current version of Terraform.
 	SupportedGrantTypes OAuthGrantTypeSet
+
+	// Oauth2 does not require scopes for the authorization endpoint, however
+	// OIDC does. Optional list of scopes to include in auth code and token
+	// requests.
+	Scopes []string
 }
 
 // Endpoint returns an oauth2.Endpoint value ready to be used with the oauth2
