@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+
 package disco
 
 import (
@@ -254,6 +256,17 @@ func (h *Host) ServiceOAuthClient(id string) (*OAuthClient, error) {
 		// able to call back to any localhost port.
 		ret.MinPort = 1024
 		ret.MaxPort = 65535
+	}
+	if scopesRaw, ok := raw["scopes"].([]interface{}); ok {
+		var scopes []string
+		for _, scopeI := range scopesRaw {
+			scope, ok := scopeI.(string)
+			if !ok {
+				return nil, fmt.Errorf("Invalid \"scopes\" for service %s: all scopes must be strings", id)
+			}
+			scopes = append(scopes, scope)
+		}
+		ret.Scopes = scopes
 	}
 
 	return ret, nil
